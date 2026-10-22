@@ -44,11 +44,11 @@ GoAuthMicroservice/
 ## Phase 0 — Setup (1 or)
 **Sovorum es:** git, Go modules, project setup.
 
-- [ ] `git init`, stexcel `.gitignore` (Go)
-- [ ] GitHub-um stexcel datark repo `go-auth-microservice`, kapel remote-@
-- [ ] `go mod init github.com/<tvoy-username>/go-auth-microservice`
-- [ ] Stexcel `README.md` 2–3 toxov (inch e nakhagic@)
-- [ ] Arajin commit + push
+- [x] `git init`, stexcel `.gitignore` (Go)
+- [x] GitHub-um stexcel datark repo `go-auth-microservice`, kapel remote-@
+- [x] `go mod init github.com/<tvoy-username>/go-auth-microservice`
+- [x] Stexcel `README.md` 2–3 toxov (inch e nakhagic@)
+- [x] Arajin commit + push
 
 **Patrast e, erb:** GitHub-um tesnum es repo-n README-ov.
 
@@ -58,10 +58,10 @@ GoAuthMicroservice/
 **Sovorum es:** package, struct, method, error handling, Gin router.
 
 - [ ] Ancnel [Tour of Go](https://go.dev/tour) — Basics + Methods (ete arden giteS, ancir)
-- [ ] `api-gateway/cmd/main.go` — Gin server `:8080`-um
-- [ ] `GET /health` → `{"status":"ok"}`
-- [ ] Port@ kardal environment variable-ic (`PORT`), default 8080
-- [ ] Stugel `curl localhost:8080/health`-ov
+- [x] `api-gateway/cmd/main.go` — Gin server `:8080`-um
+- [x] `GET /health` → `{"status":"ok"}`
+- [x] Port@ kardal environment variable-ic (`PORT`), default 8080
+- [x] Stugel `curl localhost:8080/health`-ov
 
 **Harcer, voronc patasxan@ petq e imanas:** Inch e `:=`-@? Inchu Go-um `error`-@ veradardznum en, voch te `throw`? Inch e `gin.Context`-@?
 
