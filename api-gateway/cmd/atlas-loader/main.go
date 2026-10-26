@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	stms, err := gormschema.New("postgres").Load(&model.User{})
+	stms, err := gormschema.New("postgres").Load(model.All()...)
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Faild to load gorm chema %v", err)
