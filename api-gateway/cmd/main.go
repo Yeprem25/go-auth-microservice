@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/database"
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/model"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -20,11 +19,8 @@ func main() {
 		log.Fatal("DATABASE_URL is not set")
 	}
 
-	db, err := database.Connect(dsn)
+	_, err := database.Connect(dsn)
 	if err != nil {
-		log.Fatal(err)
-	}
-	if err := db.AutoMigrate(&model.User{}); err != nil {
 		log.Fatal(err)
 	}
 
