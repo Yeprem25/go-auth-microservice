@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/database"
+	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/handler"
 	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/repository"
 	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/service"
 	"github.com/gin-gonic/gin"
@@ -26,19 +27,17 @@ func main() {
 		log.Fatal(err)
 	}
 
+	repo := repository.NewPostgresUserRepository(db)
+	authService := service.NewAuthService(repo)
+	authHandler := handler.NewAuthHandler(authService)
+
 	r := gin.Default()
 	r.GET("/health", func(c *gin.Context) {
-
 		c.JSON(http.StatusOK, gin.H{
 			"status": "ok",
 		})
 	})
-
-	repo := repository.NewPostgresUserRepository(db)
-	_ = repo
-
-	authService := service.NewAuthService(repo)
-	_ = authService
+	r.POST("/register", authHandler.Register)
 
 	port := cmp.Or(os.Getenv("PORT"), "8080")
 	if err := r.Run(":" + port); err != nil {
