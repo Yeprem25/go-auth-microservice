@@ -10,13 +10,14 @@ import (
 )
 
 type AuthService struct {
-	users repository.UserRepository
+	users     repository.UserRepository
+	jwtSecret []byte
 }
 
 var ErrInvalidCredentials = errors.New("invalid credentials")
 
-func NewAuthService(users repository.UserRepository) *AuthService {
-	return &AuthService{users: users}
+func NewAuthService(users repository.UserRepository, jwtSecret string) *AuthService {
+	return &AuthService{users: users, jwtSecret: []byte(jwtSecret)}
 }
 
 func (s *AuthService) Register(ctx context.Context, email, password string) (*model.User, error) {
@@ -34,20 +35,20 @@ func (s *AuthService) Register(ctx context.Context, email, password string) (*mo
 	return user, nil
 }
 
-func (s *AuthService) Login(ctx context.Context, email, password string) (*model.User, error) {
+func (s *AuthService) Login(ctx context.Context, email, password string) (string, error) {
 	user, err := s.users.GetByEmail(ctx, email)
 
 	if errors.Is(err, repository.ErrUserNotFound) {
-		return nil, ErrInvalidCredentials
+		return "", ErrInvalidCredentials
 	}
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 	if err != nil {
-		return nil, ErrInvalidCredentials
+		return "", ErrInvalidCredentials
 	}
 
-	return user, nil
+	return s.generateAccessToken(user.ID)
 }

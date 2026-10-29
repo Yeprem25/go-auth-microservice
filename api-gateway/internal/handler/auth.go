@@ -57,7 +57,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	user, err := h.auth.Login(c.Request.Context(), req.Email, req.Password)
+	token, err := h.auth.Login(c.Request.Context(), req.Email, req.Password)
 
 	if errors.Is(err, service.ErrInvalidCredentials) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid email or password"})
@@ -69,5 +69,11 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"id": user.ID, "email": user.Email})
+	c.JSON(http.StatusOK, gin.H{"access_token": token})
+}
+
+func (h *AuthHandler) Me(c *gin.Context) {
+	userID := c.GetInt64("userId")
+
+	c.JSON(http.StatusOK, gin.H{"id": userID})
 }
