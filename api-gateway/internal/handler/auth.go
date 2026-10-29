@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
+	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/repository"
 	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/service"
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +30,12 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}
 
 	user, err := h.auth.Register(c.Request.Context(), req.Email, req.Password)
+
+	if errors.Is(err, repository.ErrEmailTaken) {
+		c.JSON(http.StatusConflict, gin.H{"error": "email already taken"})
+		return
+	}
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
 		return
