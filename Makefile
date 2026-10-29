@@ -1,7 +1,7 @@
 include .env
 export
 
-COMPOSE    = docker compose -f ../docker-compose.yml
+COMPOSE    = docker compose
 MIGRATIONS = api-gateway/migrations
 
 .PHONY: db-up db-down migrate-new migrate-up migrate-down run
