@@ -38,6 +38,7 @@ func main() {
 		})
 	})
 	r.POST("/register", authHandler.Register)
+	r.POST("/login", authHandler.Login)
 
 	port := cmp.Or(os.Getenv("PORT"), "8080")
 	if err := r.Run(":" + port); err != nil {

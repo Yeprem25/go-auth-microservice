@@ -22,6 +22,11 @@ type registerRequest struct {
 	Password string `json:"password" binding:"required,min=8"`
 }
 
+type loginRequest struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
+
 func (h *AuthHandler) Register(c *gin.Context) {
 	var req registerRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -42,4 +47,27 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"id": user.ID, "email": user.Email})
+}
+
+func (h *AuthHandler) Login(c *gin.Context) {
+	var req loginRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := h.auth.Login(c.Request.Context(), req.Email, req.Password)
+
+	if errors.Is(err, service.ErrInvalidCredentials) {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid email or password"})
+		return
+	}
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"id": user.ID, "email": user.Email})
 }
