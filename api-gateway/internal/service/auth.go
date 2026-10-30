@@ -52,3 +52,7 @@ func (s *AuthService) Login(ctx context.Context, email, password string) (string
 
 	return s.generateAccessToken(user.ID)
 }
+
+func (s *AuthService) GetUser(ctx context.Context, id int64) (*model.User, error) {
+	return s.users.GetByID(ctx, id)
+}

@@ -75,5 +75,16 @@ func (h *AuthHandler) Login(c *gin.Context) {
 func (h *AuthHandler) Me(c *gin.Context) {
 	userID := c.GetInt64("userId")
 
-	c.JSON(http.StatusOK, gin.H{"id": userID})
+	user, err := h.auth.GetUser(c.Request.Context(), userID)
+	if errors.Is(err, repository.ErrUserNotFound) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
+		return
+	}
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"id": user.ID, "email": user.Email})
 }

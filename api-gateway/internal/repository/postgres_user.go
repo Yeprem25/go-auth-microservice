@@ -42,3 +42,16 @@ func (r *PostgresUserRepository) GetByEmail(ctx context.Context, email string) (
 
 	return &user, nil
 }
+
+func (r *PostgresUserRepository) GetByID(ctx context.Context, id int64) (*model.User, error) {
+	var user model.User
+	err := r.db.WithContext(ctx).Where("id = ?", id).First(&user).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, ErrUserNotFound
+		}
+		return nil, err
+	}
+
+	return &user, nil
+}
