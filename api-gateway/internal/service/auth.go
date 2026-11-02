@@ -11,13 +11,15 @@ import (
 
 type AuthService struct {
 	users     repository.UserRepository
+	tokens    repository.RefreshTokenRepository
 	jwtSecret []byte
 }
 
 var ErrInvalidCredentials = errors.New("invalid credentials")
+var ErrInvalidRefreshToken = errors.New("invalid refresh token")
 
-func NewAuthService(users repository.UserRepository, jwtSecret string) *AuthService {
-	return &AuthService{users: users, jwtSecret: []byte(jwtSecret)}
+func NewAuthService(users repository.UserRepository, tokens repository.RefreshTokenRepository, jwtSecret string) *AuthService {
+	return &AuthService{users: users, tokens: tokens, jwtSecret: []byte(jwtSecret)}
 }
 
 func (s *AuthService) Register(ctx context.Context, email, password string) (*model.User, error) {

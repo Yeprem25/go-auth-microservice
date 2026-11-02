@@ -1,9 +1,13 @@
 package service
 
 import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"time"
 
+	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/repository"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -35,4 +39,25 @@ func (s *AuthService) ParseAccessToken(tokenStr string) (int64, error) {
 	}
 
 	return int64(sub), nil
+}
+
+func (s *AuthService) Refresh(ctx context.Context, refreshToken string) (string, error) {
+	rt, err := s.tokens.GetByHash(ctx, hashToken(refreshToken))
+	if errors.Is(err, repository.ErrRefreshTokenNotFound) {
+		return "", ErrInvalidRefreshToken
+	}
+	if err != nil {
+		return "", err
+	}
+
+	if time.Now().After(rt.ExpiresAt) {
+		return "", ErrInvalidRefreshToken
+	}
+
+	return s.generateAccessToken(rt.UserID)
+}
+
+func hashToken(token string) string {
+	sum := sha256.Sum256([]byte(token))
+	return hex.EncodeToString(sum[:])
 }

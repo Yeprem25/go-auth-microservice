@@ -32,7 +32,8 @@ func main() {
 	}
 
 	repo := repository.NewPostgresUserRepository(db)
-	authService := service.NewAuthService(repo, jwtSecret)
+	tokenRepo := repository.NewRefreshTokenRepository(db)
+	authService := service.NewAuthService(repo, tokenRepo, jwtSecret)
 	authHandler := handler.NewAuthHandler(authService)
 
 	r := gin.Default()
@@ -43,6 +44,7 @@ func main() {
 	})
 	r.POST("/register", authHandler.Register)
 	r.POST("/login", authHandler.Login)
+	r.POST("/refresh", authHandler.Refresh)
 
 	protected := r.Group("/")
 	protected.Use(middleware.Auth(authService))
