@@ -45,6 +45,7 @@ func main() {
 	r.POST("/register", authHandler.Register)
 	r.POST("/login", authHandler.Login)
 	r.POST("/refresh", authHandler.Refresh)
+	r.POST("/logout", authHandler.Logout)
 
 	protected := r.Group("/")
 	protected.Use(middleware.Auth(authService))

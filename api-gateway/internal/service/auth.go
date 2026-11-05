@@ -90,3 +90,15 @@ func (s *AuthService) createRefreshToken(ctx context.Context, userID int64) (str
 
 	return token, nil
 }
+
+func (s *AuthService) Logout(ctx context.Context, refreshToken string) error {
+	rt, err := s.tokens.GetByHash(ctx, hashToken(refreshToken))
+	if errors.Is(err, repository.ErrRefreshTokenNotFound) {
+		return ErrInvalidRefreshToken
+	}
+	if err != nil {
+		return err
+	}
+
+	return s.tokens.Delete(ctx, rt.ID)
+}
