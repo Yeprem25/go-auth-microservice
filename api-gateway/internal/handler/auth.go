@@ -103,7 +103,7 @@ func (h *AuthHandler) Refresh(c *gin.Context) {
 		return
 	}
 
-	token, err := h.auth.Refresh(c.Request.Context(), req.RefreshToken)
+	accessToken, refreshToken, err := h.auth.Refresh(c.Request.Context(), req.RefreshToken)
 
 	if errors.Is(err, service.ErrInvalidRefreshToken) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid refresh token"})
@@ -115,5 +115,5 @@ func (h *AuthHandler) Refresh(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"access_token": token})
+	c.JSON(http.StatusOK, gin.H{"access_token": accessToken, "refresh_token": refreshToken})
 }

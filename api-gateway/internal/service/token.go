@@ -41,20 +41,33 @@ func (s *AuthService) ParseAccessToken(tokenStr string) (int64, error) {
 	return int64(sub), nil
 }
 
-func (s *AuthService) Refresh(ctx context.Context, refreshToken string) (string, error) {
+func (s *AuthService) Refresh(ctx context.Context, refreshToken string) (string, string, error) {
 	rt, err := s.tokens.GetByHash(ctx, hashToken(refreshToken))
 	if errors.Is(err, repository.ErrRefreshTokenNotFound) {
-		return "", ErrInvalidRefreshToken
+		return "", "", ErrInvalidRefreshToken
 	}
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	if time.Now().After(rt.ExpiresAt) {
-		return "", ErrInvalidRefreshToken
+		return "", "", ErrInvalidRefreshToken
+	}
+	if err := s.tokens.Delete(ctx, rt.ID); err != nil {
+		return "", "", err
 	}
 
-	return s.generateAccessToken(rt.UserID)
+	accessToken, err := s.generateAccessToken(rt.UserID)
+	if err != nil {
+		return "", "", err
+	}
+
+	refreshToken, err = s.createRefreshToken(ctx, rt.UserID)
+	if err != nil {
+		return "", "", err
+	}
+
+	return accessToken, refreshToken, nil
 }
 
 func hashToken(token string) string {
