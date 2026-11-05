@@ -2,7 +2,10 @@ package service
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"errors"
+	"time"
 
 	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/model"
 	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/repository"
@@ -37,24 +40,53 @@ func (s *AuthService) Register(ctx context.Context, email, password string) (*mo
 	return user, nil
 }
 
-func (s *AuthService) Login(ctx context.Context, email, password string) (string, error) {
+func (s *AuthService) Login(ctx context.Context, email, password string) (string, string, error) {
 	user, err := s.users.GetByEmail(ctx, email)
 
 	if errors.Is(err, repository.ErrUserNotFound) {
-		return "", ErrInvalidCredentials
+		return "", "", ErrInvalidCredentials
 	}
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
 	if err != nil {
-		return "", ErrInvalidCredentials
+		return "", "", ErrInvalidCredentials
 	}
 
-	return s.generateAccessToken(user.ID)
+	accessToken, err := s.generateAccessToken(user.ID)
+	if err != nil {
+		return "", "", err
+	}
+
+	refreshToken, err := s.createRefreshToken(ctx, user.ID)
+	if err != nil {
+		return "", "", err
+	}
+
+	return accessToken, refreshToken, nil
 }
 
 func (s *AuthService) GetUser(ctx context.Context, id int64) (*model.User, error) {
 	return s.users.GetByID(ctx, id)
+}
+
+func (s *AuthService) createRefreshToken(ctx context.Context, userID int64) (string, error) {
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	token := hex.EncodeToString(b)
+
+	err := s.tokens.Create(ctx, &model.RefreshToken{
+		UserID:    userID,
+		TokenHash: hashToken(token),
+		ExpiresAt: time.Now().Add(7 * 24 * time.Hour),
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }
