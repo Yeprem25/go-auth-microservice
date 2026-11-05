@@ -94,7 +94,7 @@ func (s *AuthService) createRefreshToken(ctx context.Context, userID int64) (str
 func (s *AuthService) Logout(ctx context.Context, refreshToken string) error {
 	rt, err := s.tokens.GetByHash(ctx, hashToken(refreshToken))
 	if errors.Is(err, repository.ErrRefreshTokenNotFound) {
-		return ErrInvalidRefreshToken
+		return nil
 	}
 	if err != nil {
 		return err
