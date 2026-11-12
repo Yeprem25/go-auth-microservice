@@ -64,7 +64,7 @@ Go Protfolio/
 **Sovorum es:** package, struct, method, error handling, Gin router.
 
 - [ ] Ancnel [Tour of Go](https://go.dev/tour) — Basics + Methods (ete arden giteS, ancir)
-- [x] `api-gateway/cmd/main.go` — Gin server `:8080`-um
+- [x] `auth-service/cmd/main.go` — Gin server `:8080`-um
 - [x] `GET /health` → `{"status":"ok"}`
 - [x] Port@ kardal environment variable-ic (`PORT`), default 8080
 - [x] Stugel `curl localhost:8080/health`-ov
@@ -117,7 +117,7 @@ Go Protfolio/
 **Sovorum es:** Protocol Buffers, gRPC server, code generation, refactoring.
 
 - [ ] **5.1** Tex@ dnel `protoc-gen-go`; grel `proto/auth/v1/auth.proto` (`Register`, `Login`, `Refresh`, `Logout`, `ValidateToken`); `make proto`; commit `gen/`
-- [ ] **5.2** Refactor papkaner@: `api-gateway/` → root `cmd/auth-service/` + `internal/` (`git mv`-ov, vor history-n chkorchi)
+- [ ] **5.2** Refactor papkaner@: `auth-service/` → root `cmd/auth-service/` + `internal/` (`git mv`-ov, vor history-n chkorchi)
 - [ ] **5.3** `internal/grpcserver` — `AuthServiceServer`-i implementation, vor@ kanchum e arden exac `service` layer-@ (service-@ chi pokhvum! 🎯)
 - [ ] **5.4** Service error-ner → gRPC code-er (`AlreadyExists`, `Unauthenticated`, `InvalidArgument`)
 - [ ] **5.5** `main.go`: Gin-i poxaren `grpc.NewServer()` `:50051`-um + gRPC health check + reflection

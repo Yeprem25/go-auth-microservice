@@ -2,7 +2,7 @@ include .env
 export
 
 COMPOSE    = docker compose
-MIGRATIONS = api-gateway/migrations
+MIGRATIONS = auth-service/migrations
 
 .PHONY: db-up db-down migrate-new migrate-up migrate-down run
 
@@ -22,4 +22,4 @@ migrate-down:
 	migrate -path $(MIGRATIONS) -database "$(DATABASE_URL)" down 1
 
 run:
-	go run ./api-gateway/cmd
+	go run ./auth-service/cmd

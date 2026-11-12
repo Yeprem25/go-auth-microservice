@@ -1,8 +1,8 @@
 services:
-  api-gateway:
+  auth-service:
     build:
       context: .
-      dockerfile: api-gateway/Dockerfile.dev
+      dockerfile: auth-service/Dockerfile.dev
     volumes:
       - .:/src
       - gomodcache:/go/pkg/mod

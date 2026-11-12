@@ -1,6 +1,6 @@
 data "external_schema" "gorm" {
   program = [
-    "go", "run", "-mod=mod", "./api-gateway/cmd/atlas-loader",
+    "go", "run", "-mod=mod", "./auth-service/cmd/atlas-loader",
   ]
 }
 
@@ -9,6 +9,6 @@ env "local" {
   dev = "docker://postgres/17/dev?search_path=public"
 
   migration {
-    dir = "file://api-gateway/migrations?format=golang-migrate"
+    dir = "file://auth-service/migrations?format=golang-migrate"
   }
 }

@@ -2,8 +2,8 @@ root = "."
 tmp_dir = "/tmp/air"
 
 [build]
-  cmd = "go build -o /tmp/air/api-gateway ./api-gateway/cmd"
-  bin = "/tmp/air/api-gateway"
+  cmd = "go build -o /tmp/air/auth-service ./auth-service/cmd"
+  bin = "/tmp/air/auth-service"
   include_ext = ["go"]
   exclude_dir = ["migrations", ".git"]
   delay = 300
