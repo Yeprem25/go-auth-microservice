@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/model"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/model"
 	"gorm.io/gorm"
 )
 

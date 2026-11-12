@@ -7,8 +7,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/model"
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/repository"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/model"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 

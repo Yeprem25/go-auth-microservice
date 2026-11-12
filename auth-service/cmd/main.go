@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/database"
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/handler"
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/middleware"
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/repository"
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/service"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/database"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/handler"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/middleware"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/repository"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

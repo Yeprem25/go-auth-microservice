@@ -7,7 +7,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/repository"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/repository"
 	"github.com/golang-jwt/jwt/v5"
 )
 

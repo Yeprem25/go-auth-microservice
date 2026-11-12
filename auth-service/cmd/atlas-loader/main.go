@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"ariga.io/atlas-provider-gorm/gormschema"
-	"github.com/Yeprem25/go-auth-microservice/api-gateway/internal/model"
+	"github.com/Yeprem25/go-auth-microservice/auth-service/internal/model"
 )
 
 func main() {
